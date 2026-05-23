@@ -1,6 +1,6 @@
 ---
 name: frontend-reusable-components
-description: Use this skill whenever building or refactoring frontend reusable components, shadcn/ui components, Tailwind CSS UI, tables, pagination, search, filters, filter bars, dropdowns, selects, comboboxes, reusable searchable dropdowns, reusable form fields, shared frontend services, API clients, feature folders, page logic separation, hooks, or frontend component architecture. It focuses on modular reusable components, using shadcn/ui whenever available or allowed, Tailwind consistency, reusable searchable dropdowns for select/dropdown fields, keeping pages thin, separating API calls/business logic/transforms into services/hooks/helpers, feature-specific code near the feature, cross-feature UI/services in shared folders, and optimized maintainable frontend code.
+description: Use this skill whenever building or refactoring frontend reusable components, shadcn/ui components, Tailwind CSS UI, cards, sections, tables, datatables, list views, pagination, search, filters, filter forms, filter bars, dropdowns, selects, comboboxes, reusable searchable dropdowns, reusable form fields, shared frontend services, API clients, feature folders, page logic separation, hooks, or frontend component architecture. It focuses on modular reusable components, using shadcn/ui whenever available or allowed, separating card sections/filter forms/list wrappers/datatables into focused reusable components, Tailwind consistency, reusable searchable dropdowns for select/dropdown fields, keeping pages thin, separating API calls/business logic/transforms into services/hooks/helpers, feature-specific code near the feature, cross-feature UI/services in shared folders, and optimized maintainable frontend code.
 ---
 
 # Frontend Reusable Components
@@ -9,11 +9,11 @@ Use this skill for focused frontend component architecture and shared service pl
 
 Use shadcn/ui components as the default UI building blocks when the project already has shadcn configured or the user allows adding it. Prefer shadcn primitives over hand-rolled buttons, inputs, dialogs, cards, badges, tables, popovers, commands, dropdown menus, and selects. If the project uses another established design system, follow that system instead of forcing shadcn.
 
-Keep page and route components thin. They should compose feature components and pass high-level props, not contain direct API calls, raw endpoint strings, large mutation workflows, repeated data transforms, validation schemas, formatter logic, or complex table/filter state.
+Keep page and route components thin. They should compose feature components and pass high-level props, not contain direct API calls, raw endpoint strings, large mutation workflows, repeated data transforms, validation schemas, formatter logic, complex table/filter state, inline card sections, inline filter forms, or inline data table/list implementations.
 
 ## Component Structure
 
-Organize reusable UI by capability. Tables, pagination, search boxes, filter controls, searchable dropdowns, form fields, dialogs, confirmations, empty states, loading states, error states, and toasts should be reusable when more than one screen can benefit from them.
+Organize reusable UI by capability. Card sections, section headers, list wrappers, data tables, pagination, search boxes, filter forms, filter controls, searchable dropdowns, form fields, dialogs, confirmations, empty states, loading states, error states, and toasts should be reusable when more than one screen can benefit from them.
 
 Keep feature-specific business behavior near the feature. Keep cross-feature UI primitives, hooks, API clients, formatting helpers, schemas, and utilities in shared locations.
 
@@ -68,13 +68,15 @@ For list pages, prefer this composition:
 
 ```text
 FeaturePage
+  -> FeatureCards or FeatureSection
   -> FeatureToolbar
        -> SearchInput
-       -> FilterControls
+       -> FeatureFilterForm or FilterControls
        -> CreateButton
-  -> DataTable
-       -> RowActions
-  -> Pagination
+  -> FeatureList or ListSection
+     -> DataTable
+        -> RowActions
+     -> Pagination
 ```
 
 Keep state clear: page, page size, search query, filters, sort, loading, error, and selected row if needed.
@@ -82,6 +84,15 @@ Keep state clear: page, page size, search query, filters, sort, loading, error, 
 Use URL query parameters for list state when the project already does so or when shareable/bookmarkable state matters.
 
 Put feature-specific column definitions near the feature. Put generic table primitives in shared components.
+
+Separate responsibilities by default:
+- Card/section components own repeated metric cards, dashboard summaries, detail sections, headers, and section-level actions.
+- Filter form components own filter fields, searchable dropdowns, date/number inputs, reset/apply actions, and filter validation.
+- List wrapper components own loading, empty, error, pagination placement, list-level actions, and composition around the table.
+- Data table components own table primitives, columns, row rendering, row actions, sorting UI, and accessibility.
+- Pages own composition and high-level state wiring only.
+
+If only one feature uses a component today but the section is substantial, keep it as a feature component rather than inline in the page. Promote it to shared only when another feature can reuse the generic behavior.
 
 Debounce search when it triggers API calls or expensive filtering. Avoid repeated transforms in render; compute data in hooks/helpers or the data layer when it improves clarity and avoids unnecessary rerenders.
 
@@ -97,4 +108,4 @@ Use the project's existing caching/data layer when available, such as TanStack Q
 
 ## Output Expectations
 
-Mention reusable components created or reused, shadcn/ui primitives used or added, dropdown/select handling with reusable searchable dropdowns, how page logic was separated into services/hooks/helpers, feature-specific pieces, shared services, table/search/filter/pagination state, optimization choices such as caching/debounce/avoiding repeated render work, and responsive/loading/empty/error handling.
+Mention reusable components created or reused, shadcn/ui primitives used or added, how card sections/filter forms/list wrappers/datatables were separated, dropdown/select handling with reusable searchable dropdowns, how page logic was separated into services/hooks/helpers, feature-specific pieces, shared services, table/search/filter/pagination state, optimization choices such as caching/debounce/avoiding repeated render work, and responsive/loading/empty/error handling.

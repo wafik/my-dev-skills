@@ -17,6 +17,8 @@ Use shadcn/ui components as the default UI building blocks when the project alre
 
 Keep pages thin. A page or route component should compose feature components and wire high-level parameters, not contain direct API calls, large business workflows, repeated data transforms, validation definitions, formatter logic, or complex table/filter state. Move those concerns into feature services, hooks, schemas, helpers, and reusable components so the code stays maintainable and easier to optimize.
 
+Separate page UI sections into focused reusable components by default. Card sections, filter forms, list containers, and data tables should not be written as one large block inside the page. A page should compose pieces such as `FeatureStatsCards`, `FeatureFilterForm`, `FeatureDataTable`, `FeatureList`, `FeatureSection`, or shared equivalents.
+
 Organize reusable UI by capability. Tables, pagination, search boxes, filter controls, form fields, dialogs, confirm prompts, and toasts should be reusable when more than one screen can benefit from them.
 
 Keep feature-specific business behavior near the feature. Keep cross-feature UI primitives, hooks, schemas, API clients, and formatting helpers in shared locations.
@@ -122,10 +124,13 @@ Good reusable components include:
 4. Filter bar or filter popover.
 5. Form field wrappers with labels, helper text, and errors.
 6. Reusable searchable dropdown for select/dropdown fields.
-7. Modal/dialog wrappers for create and update forms.
-8. Confirmation dialog for delete actions.
-9. Empty, loading, and error states.
-10. Toast or notification helpers.
+7. Card/section wrappers for repeated dashboard or detail page blocks.
+8. Filter form components separated from pages and tables.
+9. List containers separated from data table rendering.
+10. Modal/dialog wrappers for create and update forms.
+11. Confirmation dialog for delete actions.
+12. Empty, loading, and error states.
+13. Toast or notification helpers.
 
 Keep reusable components flexible but not over-abstracted. A table component should support common concerns such as rows, columns, loading, empty state, row actions, and pagination, but domain-specific labels and actions should remain in the feature.
 
@@ -135,13 +140,15 @@ For list pages, prefer this composition:
 
 ```text
 FeaturePage
+  -> FeatureSummaryCards or FeatureSections
   -> FeatureToolbar
-       -> SearchInput
-       -> FilterControls
+        -> SearchInput
+       -> FeatureFilterForm or FilterControls
        -> CreateButton
-  -> DataTable
-       -> RowActions
-  -> Pagination
+  -> FeatureList or ListSection
+     -> DataTable
+        -> RowActions
+     -> Pagination
 ```
 
 Keep table state clear: page, page size, search query, filters, sort, loading, error, and selected row if needed.
@@ -151,6 +158,12 @@ Use URL query parameters for table state when the project already does so or whe
 Debounce search only when it calls an API or expensive computation. Keep local filtering simple when the data set is small.
 
 Put feature-specific column definitions near the feature. Put generic table primitives in shared components.
+
+Keep filter form, list wrapper, and data table responsibilities separate:
+- Filter form owns filter fields, searchable dropdowns, date/number inputs, reset/apply actions, and validation if needed.
+- List wrapper owns loading, empty, error, pagination placement, and list-level actions.
+- Data table owns columns, row rendering, row actions, sorting UI, and table accessibility.
+- Page owns composition and high-level state wiring only.
 
 ## Display and Input Formatting
 
@@ -264,10 +277,11 @@ Keep request/response types close to the service or feature. Reuse shared types 
 11. For delete or hapus, use a confirmation popup before mutation.
 12. On successful create, update, or delete, show a toast success message.
 13. Use or create a reusable searchable dropdown for dropdown/select fields unless the field is a tiny fixed enum suited to plain shadcn `Select`.
-14. Keep page/route components thin by moving API calls, transforms, schemas, complex state, and mutation workflows into services, hooks, helpers, or reusable components.
-15. Add or update validation with Zod or the project's existing schema validation approach.
-16. Check for obvious performance issues such as duplicate requests, expensive search without debounce, unnecessary full-page state, or repeated transforms in render.
-17. Run the narrowest relevant validation command available, such as frontend tests, typecheck, lint, or build.
+14. Separate card sections, filter forms, list wrappers, and data tables into focused reusable components instead of placing them inline in the page.
+15. Keep page/route components thin by moving API calls, transforms, schemas, complex state, and mutation workflows into services, hooks, helpers, or reusable components.
+16. Add or update validation with Zod or the project's existing schema validation approach.
+17. Check for obvious performance issues such as duplicate requests, expensive search without debounce, unnecessary full-page state, or repeated transforms in render.
+18. Run the narrowest relevant validation command available, such as frontend tests, typecheck, lint, or build.
 
 ## Refactoring Guidance
 
@@ -292,11 +306,12 @@ When making frontend changes, briefly explain:
 3. Which shadcn/ui components were used or added.
 4. How dropdown/select fields use the reusable searchable dropdown or why a plain small-enum select was appropriate.
 5. How page logic was kept thin and where API calls, hooks, transforms, schemas, or helpers live.
-6. What optimization-relevant choices were made, such as caching, debounce, avoiding duplicate requests, or keeping render work cheap.
-7. How form validation works and where the schema lives.
-8. How date, price, total, quantity, nominal, or amount values are formatted for display and input.
-9. How create, update, delete, confirmation, and toast feedback are handled.
-10. What validation was run, or why validation could not be run.
+6. How card sections, filter forms, list wrappers, and data tables were separated or reused.
+7. What optimization-relevant choices were made, such as caching, debounce, avoiding duplicate requests, or keeping render work cheap.
+8. How form validation works and where the schema lives.
+9. How date, price, total, quantity, nominal, or amount values are formatted for display and input.
+10. How create, update, delete, confirmation, and toast feedback are handled.
+11. What validation was run, or why validation could not be run.
 
 If the user asks for a proposed structure instead of code changes, provide a concise folder tree and explain which pieces are feature-specific versus shared.
 
