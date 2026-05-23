@@ -1,0 +1,11 @@
+{
+  "skill_name": "backend-query-tooling",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add an orders list endpoint in my Bun backend. Avoid N+1 queries, use whereIn or bulk loading when looping, update Swagger if it exists, use formatter/linter without ESLint, and add integration tests only at the end.",
+      "expected_output": "The implementation avoids N+1 queries, uses Biome or Oxlint rather than new ESLint, updates Swagger request/response docs when present, and adds only integration tests at the end.",
+      "files": []
+    }
+  ]
+}

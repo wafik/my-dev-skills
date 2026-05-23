@@ -1,0 +1,11 @@
+{
+  "skill_name": "backend-profile-cache",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add get profile, update profile, and update password endpoints. Get profile must use Redis cache and update profile must invalidate the cache.",
+      "expected_output": "Profile endpoints use the existing users/auth/profile domain, shared Redis cache service, sanitized cached payloads, profile cache invalidation, and shared password verification/hashing.",
+      "files": []
+    }
+  ]
+}

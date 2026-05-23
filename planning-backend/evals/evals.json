@@ -1,0 +1,35 @@
+{
+  "skill_name": "planning-backend",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I have a Node/Express backend folder with users and orders routes mixed together. Refactor the structure so it uses modular domain folders and shared reusable services, but don't change behavior.",
+      "expected_output": "A backend refactor proposal or implementation that groups code by users/orders domains, keeps controllers thin, and moves only reusable cross-cutting code into shared services.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Add forgot password to the backend. We already have a users service and JWT auth. Please keep it modular and don't duplicate email/token helper logic.",
+      "expected_output": "Forgot-password code should be placed in the appropriate auth/users domain, with reusable email/token/password helpers placed or reused from shared services.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Our NestJS backend has payments code copied in subscriptions and orders. Clean this up into reusable shared services while keeping domain logic separated.",
+      "expected_output": "A NestJS-aware structure where payment gateway infrastructure is extracted to shared services while subscriptions and orders retain their domain-specific workflows.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Add get profile, update profile, and update password endpoints to my backend. Get profile should use Redis cache, update profile should refresh or invalidate the cache, and update password should verify the current password before saving.",
+      "expected_output": "Profile endpoints should live in the existing users/auth/profile domain, use a shared Redis cache service for get-profile with sanitized cached payloads, invalidate or refresh profile cache after profile updates, and use shared password hashing/verification for update-password.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Update my Bun backend orders API. Add a list endpoint that returns orders with customer and item totals, make sure there is no N+1 query, update Swagger request/response docs if Swagger exists, use formatter and linter but don't add ESLint, and add integration testing only at the end.",
+      "expected_output": "The backend change should use modular domain placement, avoid N+1 queries with bulk loading/whereIn or equivalent eager loading, prefer Biome or Oxlint for Bun/Node formatting and linting instead of ESLint, update accurate Swagger request/response docs when present, and add or update only integration test files after implementation.",
+      "files": []
+    }
+  ]
+}

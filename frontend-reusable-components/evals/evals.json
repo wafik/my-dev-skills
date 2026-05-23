@@ -1,0 +1,11 @@
+{
+  "skill_name": "frontend-reusable-components",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Refactor duplicated frontend tables, search boxes, filters, and pagination into reusable Tailwind components and move API calls to shared services.",
+      "expected_output": "The refactor extracts reusable Tailwind table/search/filter/pagination components, keeps feature columns/rules in the feature, and moves cross-cutting API logic to shared services.",
+      "files": []
+    }
+  ]
+}

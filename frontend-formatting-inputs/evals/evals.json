@@ -1,0 +1,11 @@
+{
+  "skill_name": "frontend-formatting-inputs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Format transaction tanggal, harga, total, and jumlah in the table. Inputs for nominal, jumlah, amount, and total need dot thousand separators like 1.000 but submit clean numeric values.",
+      "expected_output": "Display values use shared Indonesian formatters, formatted numeric inputs show dot thousands separators, and submission uses parsed clean numeric values.",
+      "files": []
+    }
+  ]
+}

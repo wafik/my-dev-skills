@@ -1,0 +1,29 @@
+{
+  "skill_name": "planning-frontend",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Build a users management page in my React frontend using Tailwind. It needs a reusable table, pagination, search, filters, create/update form popup, delete confirmation, and success toast.",
+      "expected_output": "A modular React/Tailwind implementation or plan with reusable table/search/filter/pagination components, create/update dialog for a small form, delete confirmation popup, and toast success feedback.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Refactor my frontend products folder. The table, search box, filter dropdown, and pagination are duplicated on three pages. Use reusable components and keep API calls in shared services.",
+      "expected_output": "A refactor that extracts generic table/search/filter/pagination pieces, keeps product-specific columns and rules in the products feature, and moves shared API/client logic into shared services.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add create and edit category forms. There are only 4 inputs, validation should be realtime with zod, hapus needs confirmation popup, and success should show toast.",
+      "expected_output": "Create/edit category forms should use a modal dialog because there are fewer than 7 inputs, validate with Zod in real time, confirm hapus/delete actions, and show toast on success.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Update my transaction table and form. Every tanggal, harga, total, and jumlah shown in the table must be formatted properly, and inputs for nominal, jumlah, amount, and total must show dot separators for thousands like 1.000 while still submitting clean numeric values.",
+      "expected_output": "The implementation should use shared formatting helpers for dates and Indonesian-style numeric display, apply dot thousands separators to displayed harga/total/jumlah/nominal/amount values, use formatted numeric inputs, parse values before validation/submission, and keep Zod validation on clean numeric values.",
+      "files": []
+    }
+  ]
+}

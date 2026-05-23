@@ -1,0 +1,11 @@
+{
+  "skill_name": "frontend-crud-dialogs",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Add create and edit category forms with 4 inputs. Use realtime Zod validation, hapus must show confirmation popup, and success should show toast.",
+      "expected_output": "Create/edit use a modal dialog, realtime Zod validation, delete/hapus confirmation, and success toast after mutations.",
+      "files": []
+    }
+  ]
+}
