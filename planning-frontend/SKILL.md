@@ -1,17 +1,21 @@
 ---
 name: planning-frontend
-description: Use this skill whenever planning or implementing frontend work in a frontend folder, React or Next.js UI, page, component, form, table, modal dialog, search, filter, pagination, toast, Tailwind CSS styling, Zod validation, reusable frontend service, formatted dates, formatted prices, formatted totals, formatted quantities, numeric inputs, nominal inputs, amount inputs, or frontend refactor. It guides Claude to build modular reusable components, use Tailwind CSS consistently, format displayed tanggal/harga/total/jumlah values correctly, format nominal/jumlah/amount/total inputs with thousands separators, validate forms in real time with schemas such as Zod, keep API/client logic in shared services, and use dialogs/toasts for create, update, delete, and success flows. Use it even when the user simply asks to add or fix frontend code because these patterns keep UI code reusable, maintainable, and user-friendly.
+description: Use this skill whenever planning or implementing frontend work in a frontend folder, React or Next.js UI, page, component, form, table, modal dialog, search, filter, pagination, toast, Tailwind CSS styling, shadcn/ui components, dropdowns, selects, comboboxes, Zod validation, reusable frontend service, formatted dates, formatted prices, formatted totals, formatted quantities, numeric inputs, nominal inputs, amount inputs, performance optimization, or frontend refactor. It guides Claude to build modular reusable components, keep pages thin, separate API calls/business logic/data transforms into services/hooks/helpers, use shadcn/ui components whenever available or allowed, use Tailwind CSS consistently, use reusable searchable dropdown components for select/dropdown fields, format displayed tanggal/harga/total/jumlah values correctly, format nominal/jumlah/amount/total inputs with thousands separators, validate forms in real time with schemas such as Zod, keep API/client logic in shared services, optimize render/data behavior, and use dialogs/toasts for create, update, delete, and success flows. Use it even when the user simply asks to add or fix frontend code because these patterns keep UI code reusable, maintainable, optimized, and user-friendly.
 ---
 
 # Planning Frontend
 
-Use this skill to plan, build, or refactor frontend code into modular, reusable components with Tailwind CSS, validated forms, shared services, consistent tables, and predictable feedback patterns.
+Use this skill to plan, build, or refactor frontend code into modular, reusable components with shadcn/ui when available, Tailwind CSS, validated forms, shared services, consistent tables, reusable searchable dropdowns, and predictable feedback patterns.
 
 ## Core Approach
 
 Start by reading the existing frontend structure before editing. Preserve the framework, routing style, component library, state management, naming conventions, validation approach, and existing Tailwind patterns.
 
 Prefer the smallest correct change. Reuse existing components and services before creating new ones.
+
+Use shadcn/ui components as the default UI building blocks when the project already has shadcn configured or the user allows adding it. Prefer shadcn `Button`, `Input`, `Label`, `Dialog`, `AlertDialog`, `Popover`, `Command`, `Select`, `Checkbox`, `Table`, `Badge`, `Card`, `Tabs`, `DropdownMenu`, and toast/sonner equivalents over hand-rolled primitives. If the project has a different established design system, follow that system instead of forcing shadcn.
+
+Keep pages thin. A page or route component should compose feature components and wire high-level parameters, not contain direct API calls, large business workflows, repeated data transforms, validation definitions, formatter logic, or complex table/filter state. Move those concerns into feature services, hooks, schemas, helpers, and reusable components so the code stays maintainable and easier to optimize.
 
 Organize reusable UI by capability. Tables, pagination, search boxes, filter controls, form fields, dialogs, confirm prompts, and toasts should be reusable when more than one screen can benefit from them.
 
@@ -69,6 +73,43 @@ Make responsive states explicit. Tables, filters, dialogs, and forms should work
 
 Avoid styling that only works for the happy path. Handle loading, empty, error, disabled, focused, and validation states.
 
+## shadcn/ui Components
+
+Use shadcn/ui by default when available in the project. Check for `components.json`, `components/ui`, `@/components/ui`, or existing imports before adding or using components.
+
+For common UI, prefer these shadcn primitives:
+
+1. Buttons: `Button`.
+2. Inputs: `Input`, `Textarea`, `Label`.
+3. Forms: project form wrappers or shadcn-compatible form components with `react-hook-form`.
+4. Dialogs: `Dialog` for create/update, `AlertDialog` for destructive confirmation.
+5. Dropdown actions: `DropdownMenu`.
+6. Searchable selection: `Popover` + `Command` wrapped in a reusable searchable dropdown component.
+7. Cards/badges/tabs/tables: `Card`, `Badge`, `Tabs`, `Table`.
+8. Toasts: the project's existing shadcn `toast` or `sonner` setup.
+
+Do not rebuild these primitives with raw divs unless the project lacks shadcn and adding it is out of scope. If a required shadcn component is missing but the project is already using shadcn, add the component through the project's established shadcn workflow.
+
+## Dropdowns and Selects
+
+For dropdown/select fields, use a reusable searchable dropdown component by default. This prevents inconsistent select behavior across forms and makes long option lists usable.
+
+Preferred implementation:
+
+```text
+SearchableDropdown
+  -> shadcn Button trigger
+  -> Popover
+  -> CommandInput
+  -> CommandList / CommandItem
+```
+
+Use the reusable searchable dropdown for foreign key selections such as user, product, customer, category, role, warehouse, supplier, doctor, class, location, and option lists that may grow beyond a few items.
+
+Allow a plain shadcn `Select` only for very small fixed enums, such as status with 2-5 stable values, when search would add unnecessary friction. Even then, keep the wrapper reusable if the pattern repeats.
+
+The reusable searchable dropdown should support `value`, `onChange`, options with `label` and `value`, placeholder, search placeholder, empty text, disabled state, loading state when needed, optional clear selection, and integration with the project's validation/error pattern.
+
 ## Reusable Components
 
 Create reusable components when a pattern is likely to appear across screens or already appears more than once.
@@ -80,10 +121,11 @@ Good reusable components include:
 3. Search input with debounced callback when appropriate.
 4. Filter bar or filter popover.
 5. Form field wrappers with labels, helper text, and errors.
-6. Modal/dialog wrappers for create and update forms.
-7. Confirmation dialog for delete actions.
-8. Empty, loading, and error states.
-9. Toast or notification helpers.
+6. Reusable searchable dropdown for select/dropdown fields.
+7. Modal/dialog wrappers for create and update forms.
+8. Confirmation dialog for delete actions.
+9. Empty, loading, and error states.
+10. Toast or notification helpers.
 
 Keep reusable components flexible but not over-abstracted. A table component should support common concerns such as rows, columns, loading, empty state, row actions, and pagination, but domain-specific labels and actions should remain in the feature.
 
@@ -170,6 +212,31 @@ After successful create, update, or delete actions, show a toast success message
 
 Show error feedback near the failed action or as an error toast depending on existing conventions.
 
+## Thin Pages and Logic Separation
+
+Pages/routes should stay as composition boundaries. They should choose which feature view to render, read route/search params, and pass high-level props. They should not become the place where every API call, mutation, transform, filter, and form rule accumulates.
+
+Separate frontend responsibilities like this by default:
+- API calls and HTTP details go in feature services or shared API clients.
+- Fetching/mutation orchestration goes in feature hooks or existing query hooks.
+- Business-specific transforms and mappers go in feature helpers.
+- Generic formatting and parsing go in shared utilities.
+- Validation rules go in feature schemas or shared schemas when reusable.
+- Complex table/filter/search state goes in a feature hook or reusable table/filter component.
+- UI-only reusable pieces go in shared components.
+
+Avoid direct `fetch`, `axios`, raw endpoint strings, mutation workflows, large `useEffect` data-loading blocks, and repeated mapping/formatting logic inside page components. If an existing page already has this pattern, improve it incrementally when touching that area instead of broad rewrites.
+
+## Optimization Defaults
+
+Optimize for maintainability and runtime behavior without over-engineering:
+- Avoid duplicate API calls by using the project's existing data-fetching/cache layer when available, such as TanStack Query, SWR, Next.js server data patterns, or existing hooks.
+- Keep derived values cheap and close to the data layer. Use memoization only when it avoids real repeated work or the project already follows that pattern.
+- Debounce search inputs that trigger API calls or expensive filtering.
+- Keep list/table pagination, sorting, search, and filters explicit and reusable.
+- Avoid passing unstable inline objects/functions deep into large reusable components when it causes unnecessary rerenders; follow the project's React Compiler or memoization conventions.
+- Split large components when separate state domains make the code easier to maintain, but avoid unnecessary micro-components.
+
 ## Shared Services
 
 Keep API calls, HTTP clients, storage clients, auth/session helpers, and reusable data access functions in shared services or feature services based on scope.
@@ -178,7 +245,7 @@ Use feature services when the service is specific to one domain, such as `usersS
 
 Use shared services when the logic is cross-cutting, such as `apiClient`, `uploadService`, `authTokenService`, `toastService`, or `queryClient` helpers.
 
-Avoid calling `fetch`, `axios`, or backend endpoints directly from deeply nested UI components when the project has a service layer. Components should receive callbacks or use feature hooks/services.
+Avoid calling `fetch`, `axios`, or backend endpoints directly from pages or UI components. Components should receive callbacks, data, or use feature hooks/services according to the project's existing pattern.
 
 Keep request/response types close to the service or feature. Reuse shared types only when they are genuinely shared.
 
@@ -189,15 +256,18 @@ Keep request/response types close to the service or feature. Reuse shared types 
 3. Reuse existing shared components before creating new ones.
 4. Place domain-specific UI, schemas, hooks, and services inside the feature.
 5. Place reusable UI primitives, cross-cutting hooks, and shared API clients in shared folders.
-6. Use Tailwind CSS for layout, responsive behavior, state styles, and visual polish.
+6. Use shadcn/ui components for common UI when available, with Tailwind CSS for layout, responsive behavior, state styles, and visual polish.
 7. For list screens, provide reusable table, pagination, search, and filter composition where appropriate.
 8. Format displayed `tanggal`, `harga`, `total`, `jumlah`, `nominal`, and `amount` values with shared formatters.
 9. Format numeric inputs for `nominal`, `jumlah`, `amount`, `total`, and `harga` with dot thousands separators while submitting clean numeric values.
 10. For create/update with fewer than 7 inputs, prefer a modal/dialog form.
 11. For delete or hapus, use a confirmation popup before mutation.
 12. On successful create, update, or delete, show a toast success message.
-13. Add or update validation with Zod or the project's existing schema validation approach.
-14. Run the narrowest relevant validation command available, such as frontend tests, typecheck, lint, or build.
+13. Use or create a reusable searchable dropdown for dropdown/select fields unless the field is a tiny fixed enum suited to plain shadcn `Select`.
+14. Keep page/route components thin by moving API calls, transforms, schemas, complex state, and mutation workflows into services, hooks, helpers, or reusable components.
+15. Add or update validation with Zod or the project's existing schema validation approach.
+16. Check for obvious performance issues such as duplicate requests, expensive search without debounce, unnecessary full-page state, or repeated transforms in render.
+17. Run the narrowest relevant validation command available, such as frontend tests, typecheck, lint, or build.
 
 ## Refactoring Guidance
 
@@ -206,6 +276,8 @@ Refactor incrementally. Avoid turning a small UI change into a broad design-syst
 When extracting reusable components, start from repeated UI and preserve behavior. A good extraction removes duplication while keeping feature-specific copy, data mapping, and business rules in the feature.
 
 When moving API logic to services, keep the public service methods named by user intent, such as `getUsers`, `createUser`, `updateUser`, and `deleteUser`.
+
+When moving logic out of pages, preserve behavior and make the smallest useful extraction. Prefer a feature hook such as `useUsersPage`, `useProductFilters`, or `useCreateOrder` for page orchestration, and a feature service such as `usersService` or `ordersService` for API calls. Keep shared helpers generic and avoid vague catch-all files.
 
 When adding validation, align field names, error messages, and schema rules with the backend contract when visible in the codebase.
 
@@ -217,10 +289,14 @@ When making frontend changes, briefly explain:
 
 1. Which feature or page was changed.
 2. Which reusable components or shared services were added or reused.
-3. How form validation works and where the schema lives.
-4. How date, price, total, quantity, nominal, or amount values are formatted for display and input.
-5. How create, update, delete, confirmation, and toast feedback are handled.
-6. What validation was run, or why validation could not be run.
+3. Which shadcn/ui components were used or added.
+4. How dropdown/select fields use the reusable searchable dropdown or why a plain small-enum select was appropriate.
+5. How page logic was kept thin and where API calls, hooks, transforms, schemas, or helpers live.
+6. What optimization-relevant choices were made, such as caching, debounce, avoiding duplicate requests, or keeping render work cheap.
+7. How form validation works and where the schema lives.
+8. How date, price, total, quantity, nominal, or amount values are formatted for display and input.
+9. How create, update, delete, confirmation, and toast feedback are handled.
+10. What validation was run, or why validation could not be run.
 
 If the user asks for a proposed structure instead of code changes, provide a concise folder tree and explain which pieces are feature-specific versus shared.
 
@@ -232,7 +308,7 @@ Use `features/users` for user columns, user schema, user form, and user service 
 
 **Create or update with 5 fields**
 
-Use one dialog form component for both create and update. Validate with a Zod schema in real time. On success, close the dialog, refresh the list, and show a success toast.
+Use one shadcn `Dialog` form component for both create and update. Use shadcn form/input primitives where the project supports them. Validate with a Zod schema in real time. On success, close the dialog, refresh the list, and show a success toast.
 
 **Displaying transaction data**
 
@@ -249,3 +325,7 @@ Open a confirmation popup before deleting. Show the product name in the message 
 **Repeated filters across pages**
 
 Extract reusable filter controls only for generic behavior. Keep domain-specific filter options and labels inside each feature.
+
+**Dropdown or select field**
+
+For selecting customer, product, role, category, supplier, doctor, class, location, or other relational options, use a reusable searchable dropdown built from shadcn `Popover` and `Command`. Use plain shadcn `Select` only for very small fixed enums like status.
