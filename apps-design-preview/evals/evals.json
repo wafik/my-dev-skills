@@ -1,0 +1,23 @@
+{
+  "skill_name": "apps-design-preview",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Buatkan preview desain aplikasi mobile untuk UMKM laundry. Saya mau satu file HTML berisi beberapa screen: dashboard, daftar order, detail order, form order baru, pelanggan, dan laporan. Warna utama biru toska, tapi harus gampang diganti dari CSS.",
+      "expected_output": "A standalone HTML design preview with multiple labeled phone-frame screens in one file, realistic laundry app content, and customizable CSS theme variables.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Tolong redesign konsep app kasir warung jadi preview UI. Buat banyak screen dalam satu html seperti board mockup, ada home, produk, keranjang, pembayaran sukses, riwayat transaksi, dan pengaturan. Pakai warna hijau daun dan krem, tapi customable warnanya.",
+      "expected_output": "A single HTML mockup board with six or more varied mobile screens, shared reusable styling, and root color tokens for green/cream theming.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Saya butuh apps design preview untuk aplikasi booking klinik. Tolong buat satu HTML saja, bukan React. Tampilkan screen onboarding, cari dokter, jadwal dokter, detail booking, antrian hari ini, notifikasi, dan profil. Brand color ungu soft.",
+      "expected_output": "A one-file static HTML preview for a clinic booking app with seven labeled screens, phone frames, polished medical booking UI, and editable purple theme variables.",
+      "files": []
+    }
+  ]
+}

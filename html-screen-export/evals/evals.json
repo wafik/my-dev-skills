@@ -1,0 +1,23 @@
+{
+  "skill_name": "html-screen-export",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Export screen-dashboard dan screen-order-list dari preview.html menjadi PNG. Jalankan server side, jangan minta saya screenshot manual.",
+      "expected_output": "A server-side headless browser export that saves screen-dashboard.png and screen-order-list.png from the specified HTML element ids.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Saya punya app-design-preview.html yang dibuat dari skill preview. Tolong export semua screen yang ada id screen-* menjadi gambar PNG ke folder exports.",
+      "expected_output": "The workflow auto-detects all elements whose ids start with screen-, renders the HTML headlessly, and exports each element as a PNG in exports/.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Ambil div dengan id screen-payment-success dari dist/mockup.html dan jadikan image high resolution untuk dikirim ke client.",
+      "expected_output": "A high-resolution server-side screenshot of only #screen-payment-success, using a headless browser with an increased device scale factor.",
+      "files": []
+    }
+  ]
+}

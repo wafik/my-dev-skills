@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Koperasi Sejahtera - App Preview</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --app-primary: #1B4D6B;
+    --app-primary-soft: #E6EEF3;
+    --app-primary-strong: #0E2E42;
+    --app-secondary: #2E8B57;
+    --app-secondary-soft: #E8F5EE;
+    --app-accent: #D4A017;
+    --app-accent-soft: #FDF6E3;
+    --app-danger: #C45C5C;
+    --app-danger-soft: #FDE8E8;
+    --app-success: #2E8B57;
+    --app-warning: #D4A017;
+    --app-bg: #F7F8FA;
+    --app-canvas: #E2E5EA;
+    --app-surface: #FFFFFF;
+    --app-card: #F0F2F5;
+    --app-text: #1A1D24;
+    --app-text-secondary: #5A6270;
+    --app-text-muted: #9CA3AF;
+    --app-border: #E2E5EA;
+    --app-radius-sm: 8px;
+    --app-radius: 12px;
+    --app-radius-lg: 18px;
+    --app-radius-xl: 24px;
+    --app-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --app-shadow: 0 4px 12px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+    --app-shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+    --app-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: var(--app-font);
+    background: var(--app-canvas);
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .preview-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  .preview-header h1 {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--app-text);
+    letter-spacing: -0.5px;
+  }
+  .preview-header p {
+    color: var(--app-text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+  }
+
+  .screen-wrapper {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1480px;
+  }
+
+  .preview-screen-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .phone-frame {
+    width: 320px;
+    height: 640px;
+    background: #1a1a1a;
+    border-radius: 40px;
+    padding: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 0 0 1px rgba(0,0,0,0.12);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    border-radius: 32px;
+    background: var(--app-bg);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 26px;
+    background: #1a1a1a;
+    border-radius: 0 0 16px 16px;
+    z-index: 10;
+  }
+
+  .screen-content {
+    height: 100%;
+    overflow-y: auto;
+    padding: 20px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--app-border) transparent;
+  }
+  .screen-content::-webkit-scrollbar { width: 3px; }
+  .screen-content::-webkit-scrollbar-thumb { background: var(--app-border); border-radius: 10px; }
+
+  .screen-label {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--app-text-muted);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  /* Status Bar */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--app-text);
+  }
+
+  /* Header */
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .app-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--app-text);
+  }
+  .app-header .sub {
+    font-size: 12px;
+    color: var(--app-text-muted);
+    font-weight: 500;
+  }
+  .app-header .avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--app-primary-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--app-primary);
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: var(--app-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--app-text-secondary);
+  }
+
+  /* Card */
+  .card {
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    padding: 16px;
+    box-shadow: var(--app-shadow-sm);
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--app-text-muted);
+    margin-bottom: 4px;
+  }
+  .card-value {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--app-text);
+    letter-spacing: -0.5px;
+  }
+  .card-value small {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+  }
+
+  /* Stats Grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .stat-card {
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    padding: 14px;
+    box-shadow: var(--app-shadow-sm);
+  }
+  .stat-card .icon-wrap {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--app-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+    margin-bottom: 2px;
+  }
+  .stat-card .value {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--app-text);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-success { background: var(--app-secondary-soft); color: var(--app-secondary); }
+  .badge-warning { background: var(--app-accent-soft); color: var(--app-accent); }
+  .badge-danger { background: var(--app-danger-soft); color: var(--app-danger); }
+  .badge-primary { background: var(--app-primary-soft); color: var(--app-primary); }
+
+  /* Button */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 20px;
+    border-radius: var(--app-radius);
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    font-family: var(--app-font);
+    transition: all 0.15s;
+  }
+  .btn-primary {
+    background: var(--app-primary);
+    color: #fff;
+    width: 100%;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--app-border);
+    color: var(--app-text-secondary);
+    width: 100%;
+  }
+  .btn-sm {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+    width: auto;
+  }
+
+  /* List */
+  .list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--app-border);
+  }
+  .list-item:last-child { border-bottom: none; }
+  .list-item .av {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .list-item .info { flex: 1; min-width: 0; }
+  .list-item .info .name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--app-text);
+  }
+  .list-item .info .desc {
+    font-size: 12px;
+    color: var(--app-text-muted);
+  }
+  .list-item .amount {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--app-text);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .list-item .amount.up { color: var(--app-success); }
+  .list-item .amount.down { color: var(--app-danger); }
+
+  /* Progress */
+  .progress-bar {
+    height: 6px;
+    background: var(--app-card);
+    border-radius: 100px;
+    overflow: hidden;
+    margin: 6px 0;
+  }
+  .progress-bar .fill {
+    height: 100%;
+    border-radius: 100px;
+    background: var(--app-primary);
+  }
+
+  /* Bottom Nav */
+  .bottom-nav {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    background: var(--app-surface);
+    border-radius: var(--app-radius);
+    padding: 6px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+    z-index: 5;
+    border: 1px solid var(--app-border);
+  }
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--app-text-muted);
+    padding: 4px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: var(--app-font);
+    transition: all 0.15s;
+  }
+  .nav-item.active {
+    color: var(--app-primary);
+    background: var(--app-primary-soft);
+  }
+  .nav-item svg { width: 20px; height: 20px; }
+
+  /* Transaction row */
+  .tx-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--app-border);
+  }
+  .tx-row:last-child { border-bottom: none; }
+  .tx-row .left .tx-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--app-text);
+  }
+  .tx-row .left .tx-date {
+    font-size: 11px;
+    color: var(--app-text-muted);
+  }
+  .tx-row .right {
+    text-align: right;
+  }
+  .tx-row .right .tx-amount {
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .tx-row .right .tx-amount.credit { color: var(--app-success); }
+  .tx-row .right .tx-amount.debit { color: var(--app-danger); }
+  .tx-row .right .tx-status { font-size: 10px; }
+
+  /* Form */
+  .form-group { margin-bottom: 12px; }
+  .form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--app-text-secondary);
+    margin-bottom: 4px;
+  }
+  .form-group input, .form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--app-border);
+    border-radius: var(--app-radius-sm);
+    font-size: 13px;
+    font-family: var(--app-font);
+    color: var(--app-text);
+    background: var(--app-surface);
+    outline: none;
+  }
+  .form-group input:focus, .form-group select:focus {
+    border-color: var(--app-primary);
+  }
+
+  /* Chip Group */
+  .chip-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin: 8px 0 14px;
+  }
+  .chip {
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 500;
+    border: 1.5px solid var(--app-border);
+    background: var(--app-surface);
+    color: var(--app-text-secondary);
+    cursor: pointer;
+  }
+  .chip.active {
+    background: var(--app-primary);
+    color: #fff;
+    border-color: var(--app-primary);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--app-border);
+    margin: 12px 0;
+  }
+
+  .flex { display: flex; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .gap-8 { gap: 8px; }
+  .gap-12 { gap: 12px; }
+  .mt-8 { margin-top: 8px; }
+  .mt-12 { margin-top: 12px; }
+  .mb-8 { margin-bottom: 8px; }
+  .mb-12 { margin-bottom: 12px; }
+  .text-muted { color: var(--app-text-muted); }
+  .text-sm { font-size: 12px; }
+  .fw-600 { font-weight: 600; }
+
+  /* Modal overlay */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 20;
+    border-radius: 32px;
+  }
+  .bottom-sheet {
+    background: var(--app-surface);
+    border-radius: var(--app-radius-xl) var(--app-radius-xl) 0 0;
+    padding: 20px 16px 24px;
+    width: 100%;
+    animation: slideUp 0.25s ease;
+  }
+  .bottom-sheet .handle {
+    width: 36px;
+    height: 4px;
+    background: var(--app-border);
+    border-radius: 100px;
+    margin: 0 auto 16px;
+  }
+  .bottom-sheet h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .bottom-sheet p {
+    font-size: 13px;
+    color: var(--app-text-muted);
+    margin-bottom: 16px;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(60px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .dl-btn {
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: var(--app-font);
+    color: var(--app-primary);
+    cursor: pointer;
+    margin-left: 6px;
+    transition: all 0.15s;
+    vertical-align: middle;
+  }
+  .dl-btn:hover {
+    background: var(--app-primary);
+    color: #fff;
+    border-color: var(--app-primary);
+  }
+  .dl-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+  }
+</style>
+</head>
+<body>
+
+<div class="preview-header">
+  <h1>Koperasi Sejahtera</h1>
+  <p>Preview aplikasi mobile koperasi simpan pinjam</p>
+</div>
+
+<div class="screen-wrapper">
+
+  <!-- ==================== 1. DASHBOARD ==================== -->
+  <div class="preview-screen-block" id="screen-beranda">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="screen-content" style="padding-bottom:70px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="app-header">
+            <div>
+              <div class="sub">Selamat datang 👋</div>
+              <h2>Koperasi Sejahtera</h2>
+            </div>
+            <div class="avatar">AS</div>
+          </div>
+
+          <div class="card" style="background:linear-gradient(135deg,var(--app-primary),var(--app-primary-strong));color:#fff;">
+            <div style="font-size:12px;opacity:0.8;">Total Simpanan Anda</div>
+            <div style="font-size:28px;font-weight:800;margin:4px 0 2px;letter-spacing:-0.5px;">Rp 12.850.000</div>
+            <div style="font-size:12px;opacity:0.7;">+Rp 450.000 bulan ini</div>
+            <div style="display:flex;gap:12px;margin-top:14px;">
+              <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:11px;opacity:0.7;">Pokok</div>
+                <div style="font-size:15px;font-weight:700;">Rp 8.000.000</div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:11px;opacity:0.7;">Wajib</div>
+                <div style="font-size:15px;font-weight:700;">Rp 4.200.000</div>
+              </div>
+              <div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;">
+                <div style="font-size:11px;opacity:0.7;">Sukarela</div>
+                <div style="font-size:15px;font-weight:700;">Rp 650.000</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="icon-wrap" style="background:var(--app-primary-soft);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--app-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              </div>
+              <div class="label">Anggota</div>
+              <div class="value">248</div>
+            </div>
+            <div class="stat-card">
+              <div class="icon-wrap" style="background:var(--app-secondary-soft);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--app-secondary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <div class="label">Total Simpanan</div>
+              <div class="value">Rp 1,2 M</div>
+            </div>
+            <div class="stat-card">
+              <div class="icon-wrap" style="background:var(--app-accent-soft);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--app-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div class="label">Pinjaman Aktif</div>
+              <div class="value">Rp 890 Jt</div>
+            </div>
+            <div class="stat-card">
+              <div class="icon-wrap" style="background:var(--app-danger-soft);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--app-danger)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              </div>
+              <div class="label">Angsuran Jatuh Tempo</div>
+              <div class="value">12</div>
+            </div>
+          </div>
+
+          <div class="flex-between mb-8">
+            <span style="font-size:14px;font-weight:700;color:var(--app-text);">Transaksi Terbaru</span>
+            <span style="font-size:12px;color:var(--app-primary);font-weight:600;">Lihat Semua</span>
+          </div>
+
+          <div class="card" style="padding:4px 16px;">
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Setoran Simpanan</div>
+                <div class="tx-date">12 Mei 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount credit">+Rp 500.000</div>
+                <div class="tx-status"><span class="badge badge-success">Berhasil</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Angsuran Pinjaman</div>
+                <div class="tx-date">10 Mei 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount debit">-Rp 350.000</div>
+                <div class="tx-status"><span class="badge badge-success">Lunas</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Penarikan Simpanan</div>
+                <div class="tx-date">5 Mei 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount debit">-Rp 200.000</div>
+                <div class="tx-status"><span class="badge badge-warning">Proses</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <button class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Beranda</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Anggota</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Transaksi</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Profil</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Beranda <button class="dl-btn" data-screen="screen-beranda">⬇ PNG</button></div>
+  </div>
+
+  <!-- ==================== 2. ANGGOTA ==================== -->
+  <div class="preview-screen-block" id="screen-anggota">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="screen-content" style="padding-bottom:70px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="app-header">
+            <h2>Daftar Anggota</h2>
+            <div class="flex gap-8">
+              <button class="icon-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              </button>
+              <button class="icon-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:8px;margin-bottom:14px;">
+            <div style="flex:1;background:var(--app-card);border-radius:var(--app-radius-sm);padding:10px 12px;display:flex;align-items:center;gap:8px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--app-text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span style="font-size:13px;color:var(--app-text-muted);">Cari anggota...</span>
+            </div>
+            <button class="btn btn-sm btn-primary" style="width:auto;padding:10px 14px;border-radius:var(--app-radius-sm);">Filter</button>
+          </div>
+
+          <div class="chip-group">
+            <span class="chip active">Semua</span>
+            <span class="chip">Aktif</span>
+            <span class="chip">Non-Aktif</span>
+            <span class="chip">Baru</span>
+          </div>
+
+          <div class="card" style="padding:4px 16px;">
+            <div class="list-item">
+              <div class="av" style="background:var(--app-primary-soft);color:var(--app-primary);">AS</div>
+              <div class="info">
+                <div class="name">Ahmad Syauqi</div>
+                <div class="desc">Anggota Tetap • Bergabung 2019</div>
+              </div>
+              <span class="badge badge-success">Aktif</span>
+            </div>
+            <div class="list-item">
+              <div class="av" style="background:var(--app-secondary-soft);color:var(--app-secondary);">SN</div>
+              <div class="info">
+                <div class="name">Siti Nurhaliza</div>
+                <div class="desc">Anggota Tetap • Bergabung 2020</div>
+              </div>
+              <span class="badge badge-success">Aktif</span>
+            </div>
+            <div class="list-item">
+              <div class="av" style="background:var(--app-accent-soft);color:var(--app-accent);">BR</div>
+              <div class="info">
+                <div class="name">Bambang Rusli</div>
+                <div class="desc">Anggota Biasa • Bergabung 2021</div>
+              </div>
+              <span class="badge badge-primary">Baru</span>
+            </div>
+            <div class="list-item">
+              <div class="av" style="background:var(--app-danger-soft);color:var(--app-danger);">DW</div>
+              <div class="info">
+                <div class="name">Dewi Wulandari</div>
+                <div class="desc">Anggota Tetap • Bergabung 2018</div>
+              </div>
+              <span class="badge badge-warning">Menunggak</span>
+            </div>
+            <div class="list-item">
+              <div class="av" style="background:#E8E0F0;color:#7C5FA6;">RF</div>
+              <div class="info">
+                <div class="name">Rudi Firmansyah</div>
+                <div class="desc">Anggota Biasa • Bergabung 2022</div>
+              </div>
+              <span class="badge badge-success">Aktif</span>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Beranda</span>
+          </button>
+          <button class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Anggota</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Transaksi</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Profil</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Anggota <button class="dl-btn" data-screen="screen-anggota">⬇ PNG</button></div>
+  </div>
+
+  <!-- ==================== 3. SIMPANAN ==================== -->
+  <div class="preview-screen-block" id="screen-simpanan">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="screen-content" style="padding-bottom:70px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="app-header">
+            <div>
+              <span class="sub" style="cursor:pointer;">← Kembali</span>
+              <h2>Detail Simpanan</h2>
+            </div>
+            <div class="avatar" style="background:var(--app-primary-soft);color:var(--app-primary);">AS</div>
+          </div>
+
+          <div class="card" style="text-align:center;">
+            <div class="card-title">Total Simpanan</div>
+            <div class="card-value" style="font-size:26px;">Rp 12.850.000</div>
+            <div class="chip-group" style="justify-content:center;margin-top:10px;">
+              <span class="chip active">Pokok</span>
+              <span class="chip">Wajib</span>
+              <span class="chip">Sukarela</span>
+            </div>
+            <div class="flex-between mt-8" style="font-size:13px;">
+              <span class="text-muted">Pokok</span>
+              <span style="font-weight:700;">Rp 8.000.000</span>
+            </div>
+            <div class="progress-bar" style="margin:4px 0 8px;"><div class="fill" style="width:62%;background:var(--app-primary);"></div></div>
+            <div class="flex-between" style="font-size:13px;">
+              <span class="text-muted">Wajib</span>
+              <span style="font-weight:700;">Rp 4.200.000</span>
+            </div>
+            <div class="progress-bar" style="margin:4px 0 8px;"><div class="fill" style="width:33%;background:var(--app-secondary);"></div></div>
+            <div class="flex-between" style="font-size:13px;">
+              <span class="text-muted">Sukarela</span>
+              <span style="font-weight:700;">Rp 650.000</span>
+            </div>
+            <div class="progress-bar" style="margin:4px 0 0;"><div class="fill" style="width:5%;background:var(--app-accent);"></div></div>
+          </div>
+
+          <div class="flex-between mb-8 mt-8">
+            <span style="font-size:14px;font-weight:700;color:var(--app-text);">Riwayat Simpanan</span>
+            <span style="font-size:12px;color:var(--app-primary);font-weight:600;">Filter</span>
+          </div>
+
+          <div class="card" style="padding:4px 16px;">
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Setoran Pokok</div>
+                <div class="tx-date">12 Mei 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount credit">+Rp 500.000</div>
+                <div class="tx-status"><span class="badge badge-success">Diterima</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Setoran Wajib</div>
+                <div class="tx-date">5 Mei 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount credit">+Rp 150.000</div>
+                <div class="tx-status"><span class="badge badge-success">Diterima</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Penarikan</div>
+                <div class="tx-date">28 Apr 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount debit">-Rp 200.000</div>
+                <div class="tx-status"><span class="badge badge-warning">Diproses</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Setoran Sukarela</div>
+                <div class="tx-date">20 Apr 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount credit">+Rp 100.000</div>
+                <div class="tx-status"><span class="badge badge-success">Diterima</span></div>
+              </div>
+            </div>
+            <div class="tx-row">
+              <div class="left">
+                <div class="tx-label">Bagi Hasil</div>
+                <div class="tx-date">31 Mar 2026</div>
+              </div>
+              <div class="right">
+                <div class="tx-amount credit">+Rp 325.000</div>
+                <div class="tx-status"><span class="badge badge-success">Diterima</span></div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn-primary mt-8">Setor Simpanan</button>
+        </div>
+        <div class="bottom-nav">
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Beranda</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Anggota</span>
+          </button>
+          <button class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Transaksi</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Profil</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Simpanan <button class="dl-btn" data-screen="screen-simpanan">⬇ PNG</button></div>
+  </div>
+
+  <!-- ==================== 4. PENGAJUAN PINJAMAN ==================== -->
+  <div class="preview-screen-block" id="screen-pinjaman">
+    <div class="phone-frame">
+      <div class="phone-screen">
+        <div class="notch"></div>
+        <div class="screen-content" style="padding-bottom:70px;">
+          <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+          </div>
+
+          <div class="app-header">
+            <div>
+              <span class="sub" style="cursor:pointer;">← Kembali</span>
+              <h2>Ajukan Pinjaman</h2>
+            </div>
+          </div>
+
+          <div class="card" style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <div class="card-title">Plafon Pinjaman Anda</div>
+              <div class="card-value" style="font-size:20px;">Rp 25.000.000</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="card-title">Terpakai</div>
+              <div class="card-value" style="font-size:20px;color:var(--app-danger);">Rp 8.400.000</div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="flex-between mb-8">
+              <span style="font-size:14px;font-weight:700;">Sisa Plafon</span>
+              <span style="font-size:14px;font-weight:700;color:var(--app-success);">Rp 16.600.000</span>
+            </div>
+            <div class="progress-bar"><div class="fill" style="width:34%;background:var(--app-primary);"></div></div>
+          </div>
+
+          <div class="form-group">
+            <label>Jumlah Pinjaman</label>
+            <input type="text" value="Rp 5.000.000" placeholder="Masukkan jumlah">
+          </div>
+
+          <div class="form-group">
+            <label>Tujuan Pinjaman</label>
+            <select>
+              <option>Pilih tujuan</option>
+              <option selected>Modal Usaha</option>
+              <option>Pendidikan</option>
+              <option>Kesehatan</option>
+              <option>Renovasi Rumah</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Jangka Waktu</label>
+            <select>
+              <option>Pilih tenor</option>
+              <option selected>12 Bulan</option>
+              <option>24 Bulan</option>
+              <option>36 Bulan</option>
+              <option>48 Bulan</option>
+            </select>
+          </div>
+
+          <div class="card" style="background:var(--app-primary-soft);">
+            <div class="flex-between mb-8">
+              <span style="font-size:13px;color:var(--app-text-secondary);">Estimasi Angsuran</span>
+              <span style="font-size:18px;font-weight:800;color:var(--app-primary);">Rp 485.000</span>
+            </div>
+            <div style="font-size:12px;color:var(--app-text-muted);">per bulan • bunga 1.2% flat • 12x angsuran</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="card" style="padding:12px 16px;display:flex;align-items:center;gap:10px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--app-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <span style="font-size:12px;color:var(--app-text-secondary);">Pinjaman dilindungi asuransi koperasi</span>
+          </div>
+
+          <button class="btn btn-primary mt-8">Ajukan Pinjaman</button>
+        </div>
+        <div class="bottom-nav">
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span>Beranda</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Anggota</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Transaksi</span>
+          </button>
+          <button class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Profil</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-label">Pinjaman <button class="dl-btn" data-screen="screen-pinjaman">⬇ PNG</button></div>
+  </div>
+
+</div>
+
+<script>
+async function captureFrame(frame, label) {
+  const screen = frame.querySelector('.phone-screen');
+  const content = screen.querySelector('.screen-content');
+  const nav = screen.querySelector('.bottom-nav');
+
+  const origScreenOverflow = screen.style.overflow;
+  const origContentOverflow = content.style.overflowY;
+  const origContentHeight = content.style.height;
+  const origNavDisplay = nav ? nav.style.display : null;
+
+  screen.style.overflow = 'visible';
+  content.style.overflowY = 'visible';
+  content.style.height = 'auto';
+  if (nav) nav.style.display = 'none';
+
+  const rect = frame.getBoundingClientRect();
+  const canvas = await html2canvas(frame, {
+    scale: 2,
+    useCORS: true,
+    backgroundColor: null,
+    allowTaint: true,
+    width: rect.width,
+    height: rect.height,
+    windowWidth: rect.width,
+    windowHeight: content.scrollHeight + 100,
+  });
+
+  screen.style.overflow = origScreenOverflow || '';
+  content.style.overflowY = origContentOverflow || '';
+  content.style.height = origContentHeight || '';
+  if (nav) nav.style.display = origNavDisplay || '';
+
+  const link = document.createElement('a');
+  link.download = `koperasi-${label.toLowerCase().replace(/\s+/g,'-')}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+document.querySelectorAll('.dl-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const block = document.getElementById(btn.dataset.screen);
+    const frame = block.querySelector('.phone-frame');
+    const label = block.querySelector('.screen-label').textContent.replace('⬇ PNG','').trim();
+    btn.disabled = true;
+    btn.textContent = '⏳';
+    try {
+      await captureFrame(frame, label);
+    } catch (err) {
+      alert('Gagal export: ' + err.message);
+    }
+    btn.disabled = false;
+    btn.textContent = '⬇ PNG';
+  });
+});
+</script>
+</body>
+</html>
