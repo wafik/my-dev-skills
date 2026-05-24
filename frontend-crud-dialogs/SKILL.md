@@ -1,6 +1,6 @@
 ---
 name: frontend-crud-dialogs
-description: Use this skill whenever building or changing frontend CRUD flows, create forms, update forms, edit forms, modal popup dialogs, shadcn/ui dialogs, dropdown/select form fields, reusable searchable dropdowns, delete/remove/hapus actions, confirmation popups, toast success messages, realtime form validation, Zod schemas, or short forms with fewer than 7 inputs. It focuses on shadcn/ui modal dialogs for create/update forms below 7 inputs, reusable searchable dropdowns for dropdown/select fields, confirmation dialogs for delete/hapus, Zod-style realtime validation, and success toasts after create, update, or delete.
+description: Use this skill whenever building or changing frontend CRUD flows, create forms, update forms, edit forms, password fields, password inputs with eye/eye-off visibility toggles, modal popup dialogs, shadcn/ui dialogs, dropdown/select form fields, reusable searchable dropdowns, delete/remove/hapus actions, confirmation popups, toast success messages, realtime form validation, Zod schemas, or short forms with fewer than 7 inputs. It focuses on shadcn/ui modal dialogs for create/update forms below 7 inputs, reusable searchable dropdowns for dropdown/select fields, reusable password input components for every password field, confirmation dialogs for delete/hapus, Zod-style realtime validation, and success toasts after create, update, or delete.
 ---
 
 # Frontend CRUD Dialogs
@@ -31,6 +31,22 @@ The reusable searchable dropdown should integrate with the form library and vali
 
 If dropdown options are loaded from an API, fetch them through feature hooks/services or the project's query layer. Avoid loading options directly inside generic dropdown components unless the component is explicitly designed as a data-aware feature component.
 
+## Password Fields in Forms
+
+Every form field that represents a password must use a reusable password input component with a working visibility toggle. Do not leave repeated raw `<input type="password">` elements or plain shadcn `Input` password fields scattered across login, register, reset password, change password, confirm password, or admin user forms.
+
+Prefer the project's existing `PasswordInput`, `InputPassword`, or shared form password field. If none exists, create a reusable component in the shared form/input component location and use it anywhere password fields appear.
+
+The reusable password input should:
+- Start hidden with `type="password"`.
+- Show an eye icon when hidden and an eye-off icon when visible, or follow the project's existing icon convention.
+- Toggle to `type="text"` and back correctly without clearing the field or breaking form registration.
+- Use `button type="button"` for the icon control so clicking it does not submit the dialog/form.
+- Preserve disabled state, validation state, helper/error text integration, `autoComplete`, placeholder, `name`, value, and `onChange` behavior.
+- Include accessible labels such as `Show password` and `Hide password`.
+
+Use context-appropriate `autoComplete` values when possible: `current-password` for login/current password, and `new-password` for new password and confirm password fields.
+
 ## Validation
 
 Use schema-based validation when available. Prefer Zod when the project uses or allows it.
@@ -59,4 +75,4 @@ Show error feedback near the failed action or as an error toast according to exi
 
 ## Output Expectations
 
-Mention shadcn/ui components used or added, dialog behavior, why the form belongs in a dialog or page, dropdown/select handling with reusable searchable dropdowns, where API calls and mutation orchestration live, validation schema location, delete confirmation behavior, toast success behavior, and any optimization choices such as cached option loading or avoiding duplicate requests.
+Mention shadcn/ui components used or added, dialog behavior, why the form belongs in a dialog or page, password field handling with reusable eye/eye-off toggle behavior when password fields are present, dropdown/select handling with reusable searchable dropdowns, where API calls and mutation orchestration live, validation schema location, delete confirmation behavior, toast success behavior, and any optimization choices such as cached option loading or avoiding duplicate requests.

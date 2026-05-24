@@ -1,6 +1,6 @@
 ---
 name: planning-frontend
-description: Use this skill whenever planning or implementing frontend work in a frontend folder, React or Next.js UI, page, component, form, table, modal dialog, search, filter, pagination, toast, Tailwind CSS styling, shadcn/ui components, dropdowns, selects, comboboxes, Zod validation, reusable frontend service, formatted dates, formatted prices, formatted totals, formatted quantities, numeric inputs, nominal inputs, amount inputs, performance optimization, or frontend refactor. It guides Claude to build modular reusable components, keep pages thin, separate API calls/business logic/data transforms into services/hooks/helpers, use shadcn/ui components whenever available or allowed, use Tailwind CSS consistently, use reusable searchable dropdown components for select/dropdown fields, format displayed tanggal/harga/total/jumlah values correctly, format nominal/jumlah/amount/total inputs with thousands separators, validate forms in real time with schemas such as Zod, keep API/client logic in shared services, optimize render/data behavior, and use dialogs/toasts for create, update, delete, and success flows. Use it even when the user simply asks to add or fix frontend code because these patterns keep UI code reusable, maintainable, optimized, and user-friendly.
+description: Use this skill whenever planning or implementing frontend work in a frontend folder, React or Next.js UI, page, component, form, password field, password input visibility toggle, table, modal dialog, search, filter, pagination, toast, Tailwind CSS styling, shadcn/ui components, dropdowns, selects, comboboxes, Zod validation, reusable frontend service, formatted dates, formatted prices, formatted totals, formatted quantities, numeric inputs, nominal inputs, amount inputs, performance optimization, or frontend refactor. It guides Claude to build modular reusable components, keep pages thin, separate API calls/business logic/data transforms into services/hooks/helpers, use shadcn/ui components whenever available or allowed, use Tailwind CSS consistently, use reusable searchable dropdown components for select/dropdown fields, use reusable password input components with working eye/eye-off toggles for every password field, format displayed tanggal/harga/total/jumlah values correctly, format nominal/jumlah/amount/total inputs with thousands separators, validate forms in real time with schemas such as Zod, keep API/client logic in shared services, optimize render/data behavior, and use dialogs/toasts for create, update, delete, and success flows. Use it even when the user simply asks to add or fix frontend code because these patterns keep UI code reusable, maintainable, optimized, and user-friendly.
 ---
 
 # Planning Frontend
@@ -210,6 +210,24 @@ react-hook-form + zod resolver + feature schema + reusable FormField components
 ```
 
 For create and update forms, use the same form component when the fields and validation rules are mostly the same. Pass initial values and submit handlers from the feature container.
+
+## Password Inputs
+
+Every password field must use a reusable password input component instead of a raw `<input type="password">` or plain shadcn `Input` directly in the form. This keeps visibility behavior, spacing, accessibility, and validation display consistent across login, register, reset password, change password, and user-management forms.
+
+Prefer an existing reusable password component if the project has one, such as `PasswordInput`, `InputPassword`, or a shared form password field. If it does not exist and more than one password field can benefit from it, create it in the project's shared form/input component location.
+
+The password component should:
+
+1. Render a normal password field by default with `type="password"`.
+2. Include an eye/eye-off icon toggle button inside the input area.
+3. Toggle reliably between `type="password"` and `type="text"` without losing the current value, focus behavior, disabled state, validation wiring, or form registration.
+4. Use `button type="button"` for the toggle so it never submits the form.
+5. Expose accessible labels such as `Show password` and `Hide password`, and use `aria-pressed` or equivalent state when appropriate.
+6. Support common input props including `value`, `onChange`, `name`, `placeholder`, `disabled`, `required`, `autoComplete`, and `className`, while preserving project form-library integration.
+7. Keep validation errors near the field through the existing reusable form field pattern.
+
+Use appropriate `autoComplete` values when context is clear, such as `current-password`, `new-password`, or `new-password` for confirmation fields. Do not replace actual password inputs with text inputs permanently; visibility must be controlled only by the toggle state.
 
 ## Dialogs, Modals, and Delete Confirmation
 

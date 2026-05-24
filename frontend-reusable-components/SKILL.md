@@ -1,6 +1,6 @@
 ---
 name: frontend-reusable-components
-description: Use this skill whenever building or refactoring frontend reusable components, shadcn/ui components, Tailwind CSS UI, cards, sections, tables, datatables, list views, pagination, search, filters, filter forms, filter bars, dropdowns, selects, comboboxes, reusable searchable dropdowns, reusable form fields, shared frontend services, API clients, feature folders, page logic separation, hooks, or frontend component architecture. It focuses on modular reusable components, using shadcn/ui whenever available or allowed, separating card sections/filter forms/list wrappers/datatables into focused reusable components, Tailwind consistency, reusable searchable dropdowns for select/dropdown fields, keeping pages thin, separating API calls/business logic/transforms into services/hooks/helpers, feature-specific code near the feature, cross-feature UI/services in shared folders, and optimized maintainable frontend code.
+description: Use this skill whenever building or refactoring frontend reusable components, shadcn/ui components, Tailwind CSS UI, cards, sections, tables, datatables, list views, pagination, search, filters, filter forms, filter bars, dropdowns, selects, comboboxes, reusable searchable dropdowns, password inputs, reusable password fields with eye/eye-off visibility toggles, reusable form fields, shared frontend services, API clients, feature folders, page logic separation, hooks, or frontend component architecture. It focuses on modular reusable components, using shadcn/ui whenever available or allowed, separating card sections/filter forms/list wrappers/datatables into focused reusable components, Tailwind consistency, reusable searchable dropdowns for select/dropdown fields, reusable password input components for every password field, keeping pages thin, separating API calls/business logic/transforms into services/hooks/helpers, feature-specific code near the feature, cross-feature UI/services in shared folders, and optimized maintainable frontend code.
 ---
 
 # Frontend Reusable Components
@@ -62,6 +62,22 @@ The reusable component should support:
 - Optional clear selection.
 - Form validation/error integration.
 
+## Reusable Password Input
+
+Any UI that needs a password field should use a reusable password input component, not a raw `<input type="password">` repeated in forms. Reusing this component avoids broken visibility toggles, inconsistent icon placement, and duplicated form integration code.
+
+Prefer an existing component such as `PasswordInput`, `InputPassword`, or a shared form password field. If none exists, create one in the project's shared input/form component area and build it on top of the existing design-system `Input` when possible.
+
+The component should support:
+- Password hidden by default with `type="password"`.
+- Eye and eye-off icons that clearly communicate visibility state.
+- A `button type="button"` toggle that switches between `password` and `text` without submitting the form.
+- Correct preservation of value, `onChange`, `name`, refs/form registration, disabled state, placeholder, `autoComplete`, validation styling, and focus behavior.
+- Accessible toggle labels such as `Show password` and `Hide password`, plus `aria-pressed` or the project's equivalent accessible state pattern.
+- Flexible styling through existing class/variant conventions without duplicating large Tailwind strings in every form.
+
+Use this component for login, register, reset password, change password, confirm password, and admin-created password fields. If a form library wrapper is used, wrap the reusable password input rather than replacing it with a plain text input.
+
 ## Tables, Search, Filters, Pagination
 
 For list pages, prefer this composition:
@@ -108,4 +124,4 @@ Use the project's existing caching/data layer when available, such as TanStack Q
 
 ## Output Expectations
 
-Mention reusable components created or reused, shadcn/ui primitives used or added, how card sections/filter forms/list wrappers/datatables were separated, dropdown/select handling with reusable searchable dropdowns, how page logic was separated into services/hooks/helpers, feature-specific pieces, shared services, table/search/filter/pagination state, optimization choices such as caching/debounce/avoiding repeated render work, and responsive/loading/empty/error handling.
+Mention reusable components created or reused, shadcn/ui primitives used or added, password input handling with reusable eye/eye-off toggle behavior when password fields are present, how card sections/filter forms/list wrappers/datatables were separated, dropdown/select handling with reusable searchable dropdowns, how page logic was separated into services/hooks/helpers, feature-specific pieces, shared services, table/search/filter/pagination state, optimization choices such as caching/debounce/avoiding repeated render work, and responsive/loading/empty/error handling.
